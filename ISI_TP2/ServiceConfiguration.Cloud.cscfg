@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="ISI_TP2" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="5" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="Utentes">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=utentes;AccountKey=$(_utentes.key_)" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="tiago" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEF5MF3voHF+zSDrmxCT7KWgwDQYJKoZIhvcNAQEBBQAEggEAaC31owz8zj3laOBaHhi7/GArFuIcHngXb8OR9KpFvJ9DK195A5/Z540lAhNkjhYO4DPENN3R3xxSrUIPIpmC7MSlFnS0l28T98i+EC3okjGrgIppgByvc7EsClvowR1j9/zEVE3vBBNqkFPv+k4ETGC4ZCxHT+koLVCl4xQ669CXl6Zzf5ctoReY1YzJZNWfBtMV+ODws9lgJJS0NM/5sIrWY467g9QQGy9lEvagCaj3ioIv5zKp1DColc9o8Jw2JlpZ+IUHaviZLS4PwKqkxJHhnr6/2J9WD7Dl1/d+baRz/1TNYnH+ajfApXIJvbnBoo33ntHMadc8SZRBb4DoBTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECGR8zGFBGOeEgBCGygEeRvgvJM3iDwYdtkxm" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2018-12-26T23:59:59.0000000+00:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="b7e6b378-8c33-4b0b-b2ae-a7d62e1f1949" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="6EA7F1B81BDB9A31BEB3C00D815D42EE1EEB0179" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
