@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="DBConnection.cs" />
     <Compile Include="IUtentes.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
     </Compile>

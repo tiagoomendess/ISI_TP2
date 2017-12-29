@@ -10,9 +10,8 @@ namespace Utentes
     public class DBConnection
     {
 
-        private MySqlConnection connection;
-        private MySqlCommand cmd;
-        private MySqlDataReader dr;
+        private SqlConnection connection;
+        private SqlCommand cmd;
         private string server;
         private string database;
         private string uid;
@@ -31,15 +30,9 @@ namespace Utentes
         /// </summary>
         private void Initialize()
         {
-            server = "vps.andrade.pt";
-            database = "quiosque_db";
-            uid = "app";
-            password = "ES2017PL";
-            string connectionString;
-            connectionString = "SERVER=" + server + ";" + "DATABASE=" +
-            database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+            string connectionString = "Server=tcp:tiagoomendess.database.windows.net,1433;Initial Catalog=isi_trabalho_2;Persist Security Info=False;User ID=isiapp;Password=istoeumapassTabem?;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=10;";
 
-            connection = new MySqlConnection(connectionString);
+            connection = new SqlConnection(connectionString);
         }
 
         /// <summary>
@@ -55,7 +48,7 @@ namespace Utentes
                 Log.Info("Conexão com a base de dados aberta.");
                 return true;
             }
-            catch (MySqlException ex)
+            catch (SqlException ex)
             {
                 //Caso não consiga conectar vai dar log do erro
                 switch (ex.Number)
@@ -88,7 +81,7 @@ namespace Utentes
                 Log.Info("Conexão com a Base de dados foi fechada.");
                 return true;
             }
-            catch (MySqlException ex)
+            catch (SqlException ex)
             {
                 Log.Erro(ex.Message);
                 return false;
@@ -105,7 +98,7 @@ namespace Utentes
         public int NonQuery(string query, params object[] parametros)
         {
             int rowsAfected;
-            cmd = new MySqlCommand();
+            cmd = new SqlCommand();
             cmd.Connection = this.connection;
 
             if (OpenConnection() == true)
@@ -135,7 +128,7 @@ namespace Utentes
         /// <returns>Retorna o resultado da query da base de dados</returns>
         public DataTable Query(string query, params object[] parametros)
         {
-            cmd = new MySqlCommand();
+            cmd = new SqlCommand();
             cmd.Connection = this.connection;
             DataTable dt = new DataTable();
 
