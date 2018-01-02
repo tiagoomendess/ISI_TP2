@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,9 +10,9 @@ namespace Utentes
 {
     public class DBConnection
     {
-
-        private SqlConnection connection;
-        private SqlCommand cmd;
+        private MySqlConnection connection;
+        private MySqlCommand cmd;
+        private MySqlDataReader dr;
         private string server;
         private string database;
         private string uid;
@@ -30,9 +31,15 @@ namespace Utentes
         /// </summary>
         private void Initialize()
         {
-            string connectionString = "Server=tcp:tiagoomendess.database.windows.net,1433;Initial Catalog=isi_trabalho_2;Persist Security Info=False;User ID=isiapp;Password=istoeumapassTabem?;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=10;";
+            server = "ts.mendes.com.pt";
+            database = "isi_tp2";
+            uid = "isi_tp2";
+            password = "istoeumapass";
+            string connectionString;
+            connectionString = "SERVER=" + server + ";" + "DATABASE=" +
+            database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
 
-            connection = new SqlConnection(connectionString);
+            connection = new MySqlConnection(connectionString);
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace Utentes
                 Log.Info("Conexão com a base de dados aberta.");
                 return true;
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 //Caso não consiga conectar vai dar log do erro
                 switch (ex.Number)
@@ -81,7 +88,7 @@ namespace Utentes
                 Log.Info("Conexão com a Base de dados foi fechada.");
                 return true;
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 Log.Erro(ex.Message);
                 return false;
@@ -98,7 +105,7 @@ namespace Utentes
         public int NonQuery(string query, params object[] parametros)
         {
             int rowsAfected;
-            cmd = new SqlCommand();
+            cmd = new MySqlCommand();
             cmd.Connection = this.connection;
 
             if (OpenConnection() == true)
@@ -128,7 +135,7 @@ namespace Utentes
         /// <returns>Retorna o resultado da query da base de dados</returns>
         public DataTable Query(string query, params object[] parametros)
         {
-            cmd = new SqlCommand();
+            cmd = new MySqlCommand();
             cmd.Connection = this.connection;
             DataTable dt = new DataTable();
 
@@ -141,6 +148,8 @@ namespace Utentes
                     cmd.Parameters.AddWithValue("@" + i, parametros[i]);
                 }
 
+                cmd.Prepare();
+
                 dr = cmd.ExecuteReader();
                 dt.Load(dr);
                 CloseConnection();
@@ -150,6 +159,7 @@ namespace Utentes
 
             return null;
         }
+
 
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 
 namespace Utentes
 {
-    // OBSERVAÇÃO: Você pode usar o comando "Renomear" no menu "Refatorar" para alterar o nome da interface "IUtentes" no arquivo de código e configuração ao mesmo tempo.
     [ServiceContract]
     public interface IUtentesSOAP
     {
@@ -16,6 +16,12 @@ namespace Utentes
 
         [OperationContract]
         void DoWorkSOAP();
+
+        [OperationContract]
+        bool AddUtenteSOAP(Utente utente);
+
+        [OperationContract]
+        Utente GetUtenteByNifSOAP(string nif);
     }
 
     [ServiceContract]
@@ -23,9 +29,19 @@ namespace Utentes
     {
 
         [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "isworking")]
         bool IsWorkingREST();
 
         [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "dowork")]
         void DoWorkREST();
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "utente/add", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
+        bool AddUtenteREST(Utente utente);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "utente/getbynif/{nif}")]
+        Utente GetUtenteByNifREST(string nif);
     }
 }
