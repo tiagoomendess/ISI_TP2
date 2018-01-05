@@ -29,6 +29,10 @@ namespace Utentes
     {
 
         [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "teste")]
+        string Teste();
+
+        [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "isworking")]
         bool IsWorkingREST();
 

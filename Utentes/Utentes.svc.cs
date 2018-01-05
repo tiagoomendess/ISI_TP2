@@ -1,5 +1,9 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Data;
+using System.IO;
+using System.Net;
+using System.ServiceModel.Web;
 
 namespace Utentes
 {
@@ -7,6 +11,31 @@ namespace Utentes
     {
 
         #region METODOS_REST
+
+        public string Teste()
+        {
+
+            MyRestClient rest = new MyRestClient("http://localhost:53039/Utentes.svc/rest/utente/getbynif/123456789");
+            StreamReader stream = new StreamReader(rest.GetRequest().GetResponseStream());
+
+            return stream.ReadToEnd();
+
+            //string consumerKey = "test";
+            //string consumerSecret = "segredo";
+            //var uri = new Uri("http://localhost:53039/Utentes.svc/rest/utente/getbynif/264628773");
+            //string url, param;
+            //var oAuth = new OAuthBase();
+            //var nonce = oAuth.GenerateNonce();
+            //var timeStamp = oAuth.GenerateTimeStamp();
+            //var signature = oAuth.GenerateSignature(uri, consumerKey,
+            //consumerSecret, string.Empty, string.Empty, "GET", timeStamp, nonce, out url, out param);
+
+            //WebResponse webrespon = WebRequest.Create(string.Format("{0}?{1}&oauth_signature={2}", url, param, signature)).GetResponse();
+            //StreamReader stream = new StreamReader(webrespon.GetResponseStream());
+
+            //return stream.ReadToEnd();
+
+        }
         public void DoWorkREST()
         {
             throw new NotImplementedException();
@@ -19,7 +48,15 @@ namespace Utentes
 
         public bool AddUtenteREST(Utente utente)
         {
-            return AddUtente(utente);
+            if (MyAuth.Authenticate(WebOperationContext.Current.IncomingRequest))
+            {
+                return AddUtente(utente);
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.Unauthorized;
+                return false;
+            }
         }
 
         /// <summary>
@@ -29,7 +66,15 @@ namespace Utentes
         /// <returns>Utente default caso nao exista, ou utente preenchido com o nif coorespondente</returns>
         public Utente GetUtenteByNifREST(string nif)
         {
-            return GetUtenteByNif(nif);
+            if (MyAuth.Authenticate(WebOperationContext.Current.IncomingRequest))
+            {
+                return GetUtenteByNif(nif);
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.Unauthorized;
+                return new Utente();
+            }   
         }
         #endregion
 
