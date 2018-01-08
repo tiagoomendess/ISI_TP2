@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.ServiceModel.Web;
-using System.Web;
-using DevDefined.OAuth.Consumer;
 
 namespace Utentes
 {

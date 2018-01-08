@@ -47,5 +47,9 @@ namespace Utentes
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "utente/getbynif/{nif}")]
         Utente GetUtenteByNifREST(string nif);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "utente/getbynifnoauth/{nif}")]
+        Utente GetUtenteByNifNoAuth(string nif);
     }
 }

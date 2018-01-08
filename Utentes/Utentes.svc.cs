@@ -76,6 +76,11 @@ namespace Utentes
                 return new Utente();
             }   
         }
+
+        public Utente GetUtenteByNifNoAuth(string nif)
+        {
+            return GetUtenteByNif(nif);
+        }
         #endregion
 
         #region METODOS_SOAP
