@@ -45,6 +45,14 @@ namespace Utentes
         bool AddUtenteREST(Utente utente);
 
         [OperationContract]
+        [WebInvoke(Method = "DELETE", UriTemplate = "utente/delete/{id}", ResponseFormat = WebMessageFormat.Json)]
+        bool DeleteUtenteREST(string id);
+
+        [OperationContract]
+        [WebInvoke(Method = "PUT", UriTemplate = "utente/update", ResponseFormat = WebMessageFormat.Json)]
+        bool UpdateUtenteREST(Utente utente);
+
+        [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, UriTemplate = "utente/getbynif/{nif}")]
         Utente GetUtenteByNifREST(string nif);
 

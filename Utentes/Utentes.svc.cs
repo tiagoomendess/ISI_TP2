@@ -20,21 +20,6 @@ namespace Utentes
 
             return stream.ReadToEnd();
 
-            //string consumerKey = "test";
-            //string consumerSecret = "segredo";
-            //var uri = new Uri("http://localhost:53039/Utentes.svc/rest/utente/getbynif/264628773");
-            //string url, param;
-            //var oAuth = new OAuthBase();
-            //var nonce = oAuth.GenerateNonce();
-            //var timeStamp = oAuth.GenerateTimeStamp();
-            //var signature = oAuth.GenerateSignature(uri, consumerKey,
-            //consumerSecret, string.Empty, string.Empty, "GET", timeStamp, nonce, out url, out param);
-
-            //WebResponse webrespon = WebRequest.Create(string.Format("{0}?{1}&oauth_signature={2}", url, param, signature)).GetResponse();
-            //StreamReader stream = new StreamReader(webrespon.GetResponseStream());
-
-            //return stream.ReadToEnd();
-
         }
         public void DoWorkREST()
         {
@@ -75,6 +60,44 @@ namespace Utentes
                 WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.Unauthorized;
                 return new Utente();
             }   
+        }
+
+        public bool DeleteUtenteREST(string id)
+        {
+            int rows;
+            DBConnection db;
+
+            if (MyAuth.Authenticate(WebOperationContext.Current.IncomingRequest))
+            {
+                db = new DBConnection();
+                rows = db.NonQuery("DELETE FROM utentes WHERE id = @0", id);
+
+                return rows == 1; //Caso tenha eliminado, retorna true
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.Unauthorized;
+                return false;
+            }
+        }
+
+        public bool UpdateUtenteREST(Utente utente)
+        {
+            int rows;
+            DBConnection db;
+
+            if (MyAuth.Authenticate(WebOperationContext.Current.IncomingRequest))
+            {
+                db = new DBConnection();
+                rows = db.NonQuery("UPDATE utentes SET nome = @0, nif = @1 WHERE id = @2", utente.Nome, utente.Nif, utente.Id);
+
+                return rows == 1; //Caso tenha editado, retorna true
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.Unauthorized;
+                return false;
+            }
         }
 
         public Utente GetUtenteByNifNoAuth(string nif)
@@ -152,6 +175,8 @@ namespace Utentes
             else
                 return true;
         }
+
+        
         #endregion
 
     }

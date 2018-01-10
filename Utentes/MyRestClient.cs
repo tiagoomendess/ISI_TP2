@@ -1,6 +1,8 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -32,6 +34,43 @@ namespace Utentes
 
         public WebResponse GetRequest()
         {
+            return request.GetResponse();
+        }
+
+        /// <summary>
+        /// Vai buscar o objeto Json coorespondente ao request
+        /// </summary>
+        /// <returns></returns>
+        public JObject GetJsonObject()
+        {
+
+            JObject jsonObject;
+
+            try
+            {
+                WebResponse response = GetRequest();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                string objectString = reader.ReadToEnd();
+                jsonObject = JObject.Parse(objectString);
+            }
+            catch (Exception e)
+            {
+                Log.Erro("Erro ao no metodo GetJsonObject em MyRestClient:\n" + e.Message);
+                return null;
+            }
+
+            return jsonObject;
+
+        }
+
+        /// <summary>
+        /// Faz um pedido DELETE
+        /// </summary>
+        /// <returns></returns>
+        public WebResponse DeleteRequest()
+        {
+            request.Method = "DELETE";
             return request.GetResponse();
         }
 
